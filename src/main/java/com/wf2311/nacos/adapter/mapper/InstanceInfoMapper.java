@@ -83,7 +83,7 @@ public class InstanceInfoMapper {
     }
 
     private String getAddress(ServiceInstance instance) {
-        return instance.getHost() + ":" + instance.getPort();
+        return instance.getHost();
     }
 
     private int getPort(ServiceInstance instance) {
