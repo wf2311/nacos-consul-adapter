@@ -6,6 +6,7 @@ server:
 spring:
   application:
     name: nacos-consul-adapter
+  cloud:
     inetutils:
       preferredNetworks: [ '192.168' ]
     nacos:
