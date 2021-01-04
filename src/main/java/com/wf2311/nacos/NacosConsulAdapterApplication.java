@@ -21,20 +21,30 @@
  * THE SOFTWARE.
  */
 
-package com.github.brent.nacos;
+package com.wf2311.nacos;
 
+import com.wf2311.common.AfterServiceStartedRunner;
+import com.wf2311.common.utils.PropertiesUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAsync
-public class MyApplication {
+public class NacosConsulAdapterApplication {
+
+	@Bean
+	public AfterServiceStartedRunner afterServiceStartedRunner() {
+		return new AfterServiceStartedRunner();
+	}
+
 
 	public static void main(String[] args) {
-		SpringApplication.run(MyApplication.class, args);
+		PropertiesUtil.putServerBootstrapTime();
+		SpringApplication.run(NacosConsulAdapterApplication.class, args);
 	}
 
 }

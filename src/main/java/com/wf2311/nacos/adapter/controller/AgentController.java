@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.brent.nacos.adapter.controller;
+package com.wf2311.nacos.adapter.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

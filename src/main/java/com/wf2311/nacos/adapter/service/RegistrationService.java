@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.brent.nacos.adapter.service;
+package com.wf2311.nacos.adapter.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,12 +33,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import com.wf2311.nacos.adapter.data.ChangeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
-
-import com.github.brent.nacos.adapter.data.ChangeItem;
 
 import rx.Single;
 
@@ -99,6 +98,6 @@ public class RegistrationService {
 	}
 
 	private <T> Single<ChangeItem<T>> returnDeferred(long waitMillis, Long index, Supplier<T> fn) {
-		return Single.just(new ChangeItem<>(fn.get(), new Date().getTime()));
+		return Single.just(new ChangeItem<>(fn.get(), System.currentTimeMillis()));
 	}
 }

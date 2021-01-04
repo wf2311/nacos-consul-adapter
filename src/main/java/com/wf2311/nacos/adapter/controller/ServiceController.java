@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.brent.nacos.adapter.controller;
+package com.wf2311.nacos.adapter.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.brent.nacos.adapter.service.RegistrationService;
+import com.wf2311.nacos.adapter.service.RegistrationService;
 
 import rx.Single;
 

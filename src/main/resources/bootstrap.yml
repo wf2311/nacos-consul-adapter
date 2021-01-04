@@ -1,0 +1,35 @@
+logging:
+  level:
+    root: info
+server:
+  port: 5499
+spring:
+  application:
+    name: nacos-consul-adapter
+    inetutils:
+      preferredNetworks: [ '192.168' ]
+    nacos:
+      config:
+        server-addr: nacos.wf2311.com:80 #nacos注册中心地址
+        namespace: dev #对应的namespaceId
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        refresh-enabled: true
+      discovery:
+        metadata:
+          uptime: ${server.bootstrap.time}
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        service: ${spring.application.name}
+        
+management:
+  health:
+    redis:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}

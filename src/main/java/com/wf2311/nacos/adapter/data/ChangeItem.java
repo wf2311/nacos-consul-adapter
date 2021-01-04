@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package com.github.brent.nacos.adapter.data;
+package com.wf2311.nacos.adapter.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
