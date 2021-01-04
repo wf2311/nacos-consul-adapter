@@ -30,6 +30,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wf2311.nacos.adapter.mapper.InstanceInfoMapper;
+import com.wf2311.nacos.adapter.model.Service;
+import com.wf2311.nacos.adapter.model.ServiceHealth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,6 +49,8 @@ import com.wf2311.nacos.adapter.service.RegistrationService;
 
 import rx.Single;
 
+import static java.util.stream.Collectors.toList;
+
 @Controller
 public class ServiceController {
 
@@ -59,6 +64,9 @@ public class ServiceController {
 
 	@Autowired
 	private RegistrationService registrationService;
+	@Autowired
+	private InstanceInfoMapper instanceInfoMapper;
+
 
 	@GetMapping(value = "/v1/catalog/services", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Single<ResponseEntity<Map<String, String[]>>> getServiceNames(
@@ -69,13 +77,28 @@ public class ServiceController {
 	}
 
 	@GetMapping(value = "/v1/catalog/service/{appName}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Single<ResponseEntity<List<Map<String, Object>>>> getService(@PathVariable("appName") String appName,
+	public  Single<ResponseEntity<List<Service>>> getService(@PathVariable("appName") String appName,
 			@RequestParam(name = QUERY_PARAM_WAIT, required = false) String wait,
 			@RequestParam(name = QUERY_PARAM_INDEX, required = false) Long index) {
 		Assert.isTrue(appName != null, "service name can not be null");
-		return registrationService.getService(appName, getWaitMillis(wait), index).map(item -> {
-			return createResponseEntity(item.getItem(), item.getChangeIndex());
-		});
+		return registrationService.getService(appName, getWaitMillis(wait), index)
+				.map(item -> {
+					List<Service> services = item.getItem().stream().map(instanceInfoMapper::map).collect(toList());
+					return createResponseEntity(services, item.getChangeIndex());
+				});
+	}
+
+	@GetMapping(value = "/v1/health/service/{appName}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Single<ResponseEntity<List<ServiceHealth>>> getServiceHealth(@PathVariable("appName") String appName,
+																		@RequestParam(value = QUERY_PARAM_WAIT,required = false) String wait,
+																		@RequestParam(value = QUERY_PARAM_INDEX,required = false) Long index) {
+		Assert.isTrue(appName != null, "service name can not be null");
+		return registrationService.getService(appName, getWaitMillis(wait), index)
+				.map(item -> {
+					List<ServiceHealth> services = item.getItem().stream()
+							.map(instanceInfoMapper::mapToHealth).collect(toList());
+					return createResponseEntity(services, item.getChangeIndex());
+				});
 	}
 
 	private MultiValueMap<String, String> createHeaders(long index) {

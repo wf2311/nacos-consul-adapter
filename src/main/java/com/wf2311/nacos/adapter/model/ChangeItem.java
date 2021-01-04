@@ -1,6 +1,6 @@
 /**
  * The MIT License
- * Copyright (c) 2019 Brent
+ * Copyright © 2018 Twinformatics GmbH
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,31 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.wf2311.nacos.adapter.model;
 
-package com.wf2311.nacos;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import com.wf2311.common.AfterServiceStartedRunner;
-import com.wf2311.common.utils.PropertiesUtil;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
-
-@SpringBootApplication
-@EnableDiscoveryClient
-@EnableAsync
-public class NacosConsulAdapterApplication {
-
-	@Bean
-	public AfterServiceStartedRunner afterServiceStartedRunner() {
-		return new AfterServiceStartedRunner();
-	}
-
-
-	public static void main(String[] args) {
-		PropertiesUtil.putServerBootstrapTime();
-		SpringApplication.run(NacosConsulAdapterApplication.class, args);
-	}
-
+/**
+ * Contains "something" with its last changed index
+ */
+@Getter
+@AllArgsConstructor
+public class ChangeItem<T> {
+    private T item;
+    private long changeIndex;
 }

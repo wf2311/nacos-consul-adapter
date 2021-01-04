@@ -25,7 +25,6 @@ package com.wf2311.nacos.adapter.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.wf2311.nacos.adapter.data.ChangeItem;
+import com.wf2311.nacos.adapter.model.ChangeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -55,8 +54,7 @@ public class RegistrationService {
 	public Single<ChangeItem<Map<String, String[]>>> getServiceNames(long waitMillis, Long index) {
 		return returnDeferred(waitMillis, index, () -> {
 			List<String> services = discoveryClient.getServices();
-			Set<String> set = new HashSet<String>();
-			set.addAll(services);
+			Set<String> set = new HashSet<>(services);
 
 			Map<String, String[]> result = new HashMap<String, String[]>();
 			for (String item : set) {
@@ -66,7 +64,7 @@ public class RegistrationService {
 		});
 	}
 
-	public Single<ChangeItem<List<Map<String, Object>>>> getService(String appName, long waitMillis, Long index) {
+	public Single<ChangeItem<List<Map<String, Object>>>> getService2(String appName, long waitMillis, Long index) {
 		return returnDeferred(waitMillis, index, () -> {
 			List<ServiceInstance> instances = discoveryClient.getInstances(appName);
 			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -93,6 +91,17 @@ public class RegistrationService {
 					list.add(ipObj);
 				}
 				return list;
+			}
+		});
+	}
+	public Single<ChangeItem<List<ServiceInstance>>> getService(String appName, long waitMillis, Long index) {
+		return returnDeferred(waitMillis, index, () -> {
+			List<ServiceInstance> instances = discoveryClient.getInstances(appName);
+
+			if (instances == null) {
+				return Collections.emptyList();
+			} else {
+				return instances;
 			}
 		});
 	}

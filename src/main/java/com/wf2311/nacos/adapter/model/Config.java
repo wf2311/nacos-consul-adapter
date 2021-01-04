@@ -1,6 +1,6 @@
 /**
  * The MIT License
- * Copyright (c) 2019 Brent
+ * Copyright © 2018 Twinformatics GmbH
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,16 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.wf2311.nacos.adapter.model;
 
-package com.wf2311.nacos.adapter.data;
-
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 
-
 @Getter
-@AllArgsConstructor
-public class ChangeItem<T> {
-    private T item;
-    private long changeIndex;
+@Builder
+public class Config {
+
+    @JsonProperty("Datacenter")
+    private String dataCenter;
+
 }
