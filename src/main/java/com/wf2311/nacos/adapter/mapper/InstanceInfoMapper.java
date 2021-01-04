@@ -22,16 +22,12 @@
  */
 package com.wf2311.nacos.adapter.mapper;
 
-import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.wf2311.nacos.adapter.model.Service;
 import com.wf2311.nacos.adapter.model.ServiceHealth;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 @Component
@@ -45,11 +41,11 @@ public class InstanceInfoMapper {
                 .address(address)
                 .serviceAddress(address)
                 .serviceName(instance.getServiceId())
-                .serviceID(instance.getInstanceId())
+                .serviceID(getServiceId(instance))
                 .servicePort(getPort(instance))
                 .node(instance.getServiceId())
                 .nodeMeta(instance.getMetadata())
-                .serviceMeta(null)
+                .serviceMeta(serviceMeta(instance))
                 .serviceTags(NO_SERVICE_TAGS)
                 .build();
     }
@@ -62,17 +58,17 @@ public class InstanceInfoMapper {
                 .meta(instance.getMetadata())
                 .build();
         ServiceHealth.Service service = ServiceHealth.Service.builder()
-                .id(instance.getInstanceId())
+                .id(getServiceId(instance))
                 .name(instance.getServiceId())
                 .tags(NO_SERVICE_TAGS)
                 .address(address)
-                .meta(null)
+                .meta(serviceMeta(instance))
                 .port(getPort(instance))
                 .build();
         ServiceHealth.Check check = ServiceHealth.Check.builder()
                 .node(instance.getServiceId())
                 .checkID("service:" + instance.getServiceId())
-                .name("Service '" + instance.getInstanceId() + "' check")
+                .name("Service '" + getServiceId(instance) + "' check")
                 .status("up")
                 .build();
         return ServiceHealth.builder()
@@ -82,8 +78,17 @@ public class InstanceInfoMapper {
                 .build();
     }
 
+    private Map<String, String> serviceMeta(ServiceInstance instance) {
+        Map<String, String> map = new HashMap<>();
+        map.put("management.port", "" + instance.getPort());
+        return map;
+    }
+
     private String getAddress(ServiceInstance instance) {
         return instance.getHost();
+    }
+    private String getServiceId(ServiceInstance instance) {
+        return instance.getHost() + ":" + instance.getPort();
     }
 
     private int getPort(ServiceInstance instance) {

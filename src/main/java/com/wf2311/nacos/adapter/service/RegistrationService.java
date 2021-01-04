@@ -94,6 +94,7 @@ public class RegistrationService {
 			}
 		});
 	}
+
 	public Single<ChangeItem<List<ServiceInstance>>> getService(String appName, long waitMillis, Long index) {
 		return returnDeferred(waitMillis, index, () -> {
 			List<ServiceInstance> instances = discoveryClient.getInstances(appName);
