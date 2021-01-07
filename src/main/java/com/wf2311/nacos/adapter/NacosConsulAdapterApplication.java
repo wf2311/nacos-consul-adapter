@@ -25,8 +25,10 @@ package com.wf2311.nacos.adapter;
 
 import com.wf2311.common.AfterServiceStartedRunner;
 import com.wf2311.common.utils.PropertiesUtil;
+import com.wf2311.nacos.adapter.config.ServiceDiscoveryProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -34,6 +36,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAsync
+@EnableConfigurationProperties(ServiceDiscoveryProperties.class)
 public class NacosConsulAdapterApplication {
 
 	@Bean

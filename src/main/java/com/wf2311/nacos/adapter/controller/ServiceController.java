@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wf2311.nacos.adapter.config.ServiceDiscoveryProperties;
 import com.wf2311.nacos.adapter.mapper.InstanceInfoMapper;
 import com.wf2311.nacos.adapter.model.Service;
 import com.wf2311.nacos.adapter.model.ServiceHealth;
@@ -66,12 +67,19 @@ public class ServiceController {
 	private RegistrationService registrationService;
 	@Autowired
 	private InstanceInfoMapper instanceInfoMapper;
+	@Autowired
+	private ServiceDiscoveryProperties serviceDiscoveryProperties;
 
 
 	@GetMapping(value = "/v1/catalog/services", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Single<ResponseEntity<Map<String, String[]>>> getServiceNames(
 			@RequestParam(name = QUERY_PARAM_WAIT, required = false) String wait,
 			@RequestParam(name = QUERY_PARAM_INDEX, required = false) Long index) {
+		if (serviceDiscoveryProperties.isEnabled()) {
+			return registrationService.getConfigServiceNames()
+					.map(item -> createResponseEntity(item.getItem(), item.getChangeIndex()));
+		}
+
 		return registrationService.getServiceNames(getWaitMillis(wait), index)
 				.map(item -> createResponseEntity(item.getItem(), item.getChangeIndex()));
 	}

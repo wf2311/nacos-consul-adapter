@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import com.wf2311.nacos.adapter.config.ServiceDiscoveryProperties;
 import com.wf2311.nacos.adapter.model.ChangeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -50,13 +51,27 @@ public class RegistrationService {
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
+	@Autowired
+	private ServiceDiscoveryProperties serviceDiscoveryProperties;
 
 	public Single<ChangeItem<Map<String, String[]>>> getServiceNames(long waitMillis, Long index) {
 		return returnDeferred(waitMillis, index, () -> {
 			List<String> services = discoveryClient.getServices();
 			Set<String> set = new HashSet<>(services);
 
-			Map<String, String[]> result = new HashMap<String, String[]>();
+			Map<String, String[]> result = new HashMap<>();
+			for (String item : set) {
+				result.put(item, NO_SERVICE_TAGS);
+			}
+			return result;
+		});
+	}
+	public Single<ChangeItem<Map<String, String[]>>> getConfigServiceNames() {
+		return returnDeferred( () -> {
+			List<String> services = serviceDiscoveryProperties.getServices();
+			Set<String> set = new HashSet<>(services);
+
+			Map<String, String[]> result = new HashMap<>();
 			for (String item : set) {
 				result.put(item, NO_SERVICE_TAGS);
 			}
@@ -83,7 +98,7 @@ public class RegistrationService {
 					ipObj.put("ServiceID", instance.getHost() + ":" + instance.getPort());
 					ipObj.put("ServicePort", instance.getPort());
 					ipObj.put("NodeMeta", Collections.emptyMap());
-					Map<String, String> metaJo = new HashMap<String, String>();
+					Map<String, String> metaJo = new HashMap<>();
 					metaJo.put("management.port", "" + instance.getPort());
 					ipObj.put("ServiceMeta", metaJo);
 					ipObj.put("ServiceTags", Collections.emptyList());
@@ -108,6 +123,9 @@ public class RegistrationService {
 	}
 
 	private <T> Single<ChangeItem<T>> returnDeferred(long waitMillis, Long index, Supplier<T> fn) {
+		return Single.just(new ChangeItem<>(fn.get(), System.currentTimeMillis()));
+	}
+	private <T> Single<ChangeItem<T>> returnDeferred(Supplier<T> fn) {
 		return Single.just(new ChangeItem<>(fn.get(), System.currentTimeMillis()));
 	}
 }

@@ -37,6 +37,7 @@ maven-build:  #定义的 Jobs 之一，用于构建 jar 包。script 为具体�
     - docker info
     - mvn -DskipTests clean install  && mvn -DskipTests package
   artifacts:
+    expire_in: 1 days
     paths:
       - target/*.jar
 docker-build: #定义的 Jobs 之一，将当前项目按照预先定义好的Dockerfile文件打包成docker镜像并上传到指定的docker仓库中

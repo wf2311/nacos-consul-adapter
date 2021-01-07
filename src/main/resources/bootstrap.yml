@@ -3,6 +3,7 @@ logging:
     root: info
 server:
   port: 5499
+
 spring:
   application:
     name: nacos-consul-adapter
