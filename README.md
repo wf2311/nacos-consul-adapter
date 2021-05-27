@@ -19,7 +19,7 @@
 - job_name: 'nacos-prometheus'
   metrics_path: '/actuator/prometheus'
   consul_sd_configs:
-  - server: 'localhost:8080'
+  - server: 'nacos-consul-adapter:5499'
     services: []
 ```
 
