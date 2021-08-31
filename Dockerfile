@@ -15,7 +15,7 @@ COPY --from=builder /application/wf2311-dependencies/ ./
 COPY --from=builder /application/application/ ./
 ADD bin/docker-startup.sh bin/startup.sh
 
-ENV JVM_OPTS '-Xmx256m -Xms64m -Xss256k'
+ENV JVM_OPTS '-Xmx256m -Xms256m -Xss256k'
 ENV JVM_AGENT ''
 ENV SERVER_PORT 8080
 ENV NACOS_ADDR ''

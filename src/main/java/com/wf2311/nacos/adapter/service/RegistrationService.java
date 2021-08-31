@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.wf2311.nacos.adapter.config.ServiceDiscoveryProperties;
+import com.wf2311.nacos.adapter.config.ServiceFilterProperties;
 import com.wf2311.nacos.adapter.model.ChangeItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -52,7 +52,7 @@ public class RegistrationService {
 	@Autowired
 	private DiscoveryClient discoveryClient;
 	@Autowired
-	private ServiceDiscoveryProperties serviceDiscoveryProperties;
+	private ServiceFilterProperties serviceDiscoveryProperties;
 
 	public Single<ChangeItem<Map<String, String[]>>> getServiceNames(long waitMillis, Long index) {
 		return returnDeferred(waitMillis, index, () -> {

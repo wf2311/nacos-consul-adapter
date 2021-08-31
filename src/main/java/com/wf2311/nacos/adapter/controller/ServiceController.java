@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.wf2311.nacos.adapter.config.ServiceDiscoveryProperties;
+import com.wf2311.nacos.adapter.config.ServiceFilterProperties;
 import com.wf2311.nacos.adapter.mapper.InstanceInfoMapper;
 import com.wf2311.nacos.adapter.model.Service;
 import com.wf2311.nacos.adapter.model.ServiceHealth;
@@ -68,7 +68,7 @@ public class ServiceController {
 	@Autowired
 	private InstanceInfoMapper instanceInfoMapper;
 	@Autowired
-	private ServiceDiscoveryProperties serviceDiscoveryProperties;
+	private ServiceFilterProperties serviceDiscoveryProperties;
 
 
 	@GetMapping(value = "/v1/catalog/services", produces = MediaType.APPLICATION_JSON_VALUE)
