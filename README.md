@@ -1,6 +1,8 @@
 ## Nacos Consul Adapter (for Prometheus)
 当使用Nacos作为注册中心时通过`nacos-consul-adapter`能够使prometheus自动发现Nacos中的服务
 
+项目地址：[wf2311/nacos-consul-adapter](https://github.com/wf2311/nacos-consul-adapter) Fork自[xuande/nacos-consul-adapter](https://github.com/xuande/nacos-consul-adapter)
+
 ## Restrictions
 这个适配器只实现了prometheus使用consul_sd_config配置时需要的http接口，具体实现的接口如下：
 - /v1/agent/self 返回默认的datacenter
@@ -31,8 +33,9 @@ app:
 修改`application.yml`中的
 - spring.cloud.nacos.config.server-addr
 - spring.cloud.nacos.config.namespace
-启动项目
+  启动项目
 ### docker启动
+
 ```shell
 docker run -d -t  -p 3040:3040 \
 -v ~/logs/nacos-consul-adapter/:/application/logs \
@@ -42,6 +45,7 @@ docker run -d -t  -p 3040:3040 \
 -e NACOS_NAMESPACE='<nacos命名空间>' \
 --name nacos-consul-adapter wf2311/nacos-consul-adapter:latest
 ```
+
 ### docker-compose启动
 ```yml
 version: "3"
@@ -60,7 +64,7 @@ services:
       - "5499:5499"
 ```
 
-### k8s 
+### k8s部署脚本
 ```yml
 apiVersion: apps/v1
 kind: Deployment
