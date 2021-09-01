@@ -22,11 +22,11 @@
 ```yml
 app:
   filter:
-    enabled: true   #默认为false，表示将会自动发现所有的服务；为true时，只会读取app.filter.services中的服务列表
+    enabled: true   #默认为false，表示将会自动发现所有的服务；为true时，会先读取nacos中所有的服务再根据app.filter.services中的服务列表进行过滤
     services:
-        - service-a
-        - service-b
-        - service-c
+      - service-a
+      - service-b
+      - service-c
 ```
 ## 启动方式
 ### 本机调试
@@ -34,6 +34,7 @@ app:
 - spring.cloud.nacos.config.server-addr
 - spring.cloud.nacos.config.namespace
   启动项目
+
 ### docker启动
 
 ```shell
@@ -118,7 +119,7 @@ spec:
 - job_name: 'nacos-prometheus'
   metrics_path: '/actuator/prometheus'
   consul_sd_configs:
-  - server: 'nacos-consul-adapter-2.nacos-consul-adapter-group.svc.cluster.local:5499'
+  - server: 'nacos-consul-adapter.nacos-consul-adapter-group.svc.cluster.local:5499'
     services: []
 ```
 
