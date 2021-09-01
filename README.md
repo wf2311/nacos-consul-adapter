@@ -96,7 +96,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nacos-consul-adapter
-  namespace: backend
+  namespace: nacos-consul-adapter-group
 spec:
   ports:
     - port: 5499
@@ -114,7 +114,7 @@ spec:
 - job_name: 'nacos-prometheus'
   metrics_path: '/actuator/prometheus'
   consul_sd_configs:
-  - server: 'nacos-consul-adapter:5499'
+  - server: 'nacos-consul-adapter-2.nacos-consul-adapter-group.svc.cluster.local:5499'
     services: []
 ```
 
